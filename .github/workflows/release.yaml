@@ -1,8 +1,9 @@
 ---
 name: Release
 on:
+  pull_request:
   push:
-    tags:
+    branches:
       - "*"
 jobs:
   build:
@@ -45,10 +46,3 @@ jobs:
         run: |
           CROSS_CONTAINER_ENGINE=podman cross build --target x86_64-unknown-linux-gnu --release
           cp target/x86_64-unknown-linux-gnu/release/oryx oryx-x86_64-unknown-linux-gnu
-
-      - name: Upload Binary
-        uses: softprops/action-gh-release@v2
-        with:
-          files: "oryx*"
-          body: |
-            [Release.md](${{ github.server_url }}/${{ github.repository }}/blob/main/Release.md)
