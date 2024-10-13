@@ -25,7 +25,7 @@ jobs:
       - name: Install the dependencies
         run: |
           sudo apt update
-          sudo apt install -y podman binutils-aarch64-linux-gnu musl-tools
+          sudo apt install -y podman binutils-aarch64-linux-gnu musl-tools libc6-amd64-cross libc6
           cargo binstall -y cross
           cargo binstall -y bpf-linker
 
