@@ -15,13 +15,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: cargo-bins/cargo-binstall@main
-
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: nightly
-          components: clippy rustfmt
-
       # Install LLVM 19
       - name: Install LLVM 18
         env:
@@ -33,12 +26,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y llvm-19 llvm-19-dev llvm-19-tools llvm-19-dev
 
-      - name: Install the dependencies
+      - name: Install extra apt dependencies
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo apt-get update
-          sudo apt-get install -y podman binutils-aarch64-linux-gnu musl-tools libc6-amd64-cross libc6
+          sudo apt-get install -y podman binutils-aarch64-linux-gnu binutils-x86-64-linux-gnu musl-tools libc6-amd64-cross libc6-arm64-cross libc6
+
+      - uses: cargo-bins/cargo-binstall@main
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: nightly
+          components: clippy rustfmt
+
+      - name: Install the dependencies
+        run: |
           cargo binstall -y cross
           cargo binstall -y bpf-linker
 
