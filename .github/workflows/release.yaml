@@ -24,7 +24,7 @@ jobs:
           echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] http://apt.llvm.org/$UBUNTU_CODENAME/ llvm-toolchain-$UBUNTU_CODENAME-19 main" | sudo tee /etc/apt/sources.list.d/llvm.list
           curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/llvm-archive-keyring.gpg
           sudo apt-get update
-          sudo apt-get install -y llvm-19 llvm-19-dev llvm-19-tools llvm-19-dev libpolly-19-dev lld-19
+          sudo apt-get install -y llvm-19 llvm-19-dev llvm-19-tools llvm-19-dev libpolly-19-dev lld-19 clang-19
 
       - name: Install extra apt dependencies
         env:
