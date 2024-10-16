@@ -33,8 +33,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y podman binutils-aarch64-linux-gnu binutils-x86-64-linux-gnu musl-tools libc6-amd64-cross libc6-arm64-cross libc6
 
-      - uses: cargo-bins/cargo-binstall@main
-
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: nightly
@@ -42,8 +40,8 @@ jobs:
 
       - name: Install the dependencies
         run: |
-          cargo binstall -y cross
-          cargo binstall -y bpf-linker
+          cargo install cross
+          cargo install bpf-linker
 
       - name: Build oryx-ebpf
         run: cargo xtask build-ebpf --release
