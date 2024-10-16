@@ -35,11 +35,8 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: nightly
+          toolchain: stable
           components: clippy rustfmt
-
-      - name: Update stable toolchain
-        run: rustup update --force-non-host stable-$(uname -m)-unknown-linux-gnu
 
       - name: Install the dependencies
         run: |
