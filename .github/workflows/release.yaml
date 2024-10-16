@@ -52,8 +52,15 @@ jobs:
         env:
           CROSS_CONTAINER_ENGINE: podman
         run: |
-          cross build --target aarch64-unknown-linux-gnu --release
+          cross build --target x86_64-unknown-linux-gnu --release
           cp target/x86_64-unknown-linux-gnu/release/oryx oryx-x86_64-unknown-linux-gnu
+
+      - name: Build for arm64 glibc
+        env:
+          CROSS_CONTAINER_ENGINE: podman
+        run: |
+          cross build --target aarch64-unknown-linux-gnu --release
+          cp target/aarch64-unknown-linux-gnu/release/oryx oryx-aarch64-unknown-linux-gnu
 
       - name: Build for arm64 musl
         env:
