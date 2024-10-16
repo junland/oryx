@@ -79,4 +79,4 @@ jobs:
 
       - name: Verify the binaries
         run: |
-          file oryx-*
+          file oryx-*-unknown-linux-*
