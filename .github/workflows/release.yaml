@@ -38,6 +38,9 @@ jobs:
           toolchain: nightly
           components: clippy rustfmt
 
+      - name: Update stable toolchain
+        run: rustup update --force-non-host stable-$(uname -m)-unknown-linux-gnu
+
       - name: Install the dependencies
         run: |
           cargo install cross
