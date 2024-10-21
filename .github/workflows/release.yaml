@@ -1,9 +1,8 @@
 ---
 name: Release
 on:
-  pull_request:
   push:
-    branches:
+    tags:
       - "*"
 
 env:
@@ -62,3 +61,10 @@ jobs:
       - name: Verify the binaries
         run: |
           file oryx-*-unknown-linux-*
+
+      - name: Upload binary
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "oryx-${{ matrix.architecture }}-unknown-linux-${{ matrix.libc }}"
+          body: |
+            [Release.md](${{ github.server_url }}/${{ github.repository }}/blob/main/Release.md)
