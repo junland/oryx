@@ -11,8 +11,10 @@ env:
 
 jobs:
   build:
-    permissions:
-      contents: write
+    strategy:
+      matrix:
+        architecture: [x86_64, aarch64]
+        libc: [gnu, musl]
     continue-on-error: false
     runs-on: ubuntu-latest
     steps:
@@ -50,33 +52,12 @@ jobs:
       - name: Build oryx-ebpf
         run: cargo xtask build-ebpf --release
 
-      - name: Build for x86_64 glibc
+      - name: Build for ${{ matrix.architecture }} using ${{ matrix.libc }} libc
         env:
           CROSS_CONTAINER_ENGINE: podman
         run: |
-          cross +${{ env.RUST_TC_CHANNEL }} build --target x86_64-unknown-linux-gnu --release
-          cp -v target/x86_64-unknown-linux-gnu/release/oryx oryx-x86_64-unknown-linux-gnu
-
-      - name: Build for arm64 glibc
-        env:
-          CROSS_CONTAINER_ENGINE: podman
-        run: |
-          cross +${{ env.RUST_TC_CHANNEL }} build --target aarch64-unknown-linux-gnu --release
-          cp -v target/aarch64-unknown-linux-gnu/release/oryx oryx-aarch64-unknown-linux-gnu
-
-      - name: Build for x86_64 musl
-        env:
-          CROSS_CONTAINER_ENGINE: podman
-        run: |
-          cross +${{ env.RUST_TC_CHANNEL }} build --target x86_64-unknown-linux-musl --release
-          cp -v target/x86_64-unknown-linux-musl/release/oryx oryx-x86_64-unknown-linux-musl
-
-      - name: Build for arm64 musl
-        env:
-          CROSS_CONTAINER_ENGINE: podman
-        run: |
-          cross +${{ env.RUST_TC_CHANNEL }} build --target aarch64-unknown-linux-musl --release
-          cp -v target/aarch64-unknown-linux-musl/release/oryx oryx-aarch64-unknown-linux-musl
+          cross +${{ env.RUST_TC_CHANNEL }} build --target ${{ matrix.architecture }}-unknown-linux-${{ matrix.libc }} --release
+          cp -v target/${{ matrix.architecture }}-unknown-linux-${{ matrix.libc }}/release/oryx oryx-${{ matrix.architecture }}-unknown-linux-${{ matrix.libc }}
 
       - name: Verify the binaries
         run: |
